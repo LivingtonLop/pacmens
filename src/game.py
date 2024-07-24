@@ -32,4 +32,5 @@ class Game(Events):
 
     def render(self):
         self.surface.fill((WHITE))
+        self.map.render(surface=self.surface)
         pygame.display.update()

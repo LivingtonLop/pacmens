@@ -1,3 +1,4 @@
+from map import Map
 from config.envioriment_to_class import (
                                             json,
                                             os,
@@ -19,7 +20,8 @@ class ResourcesToClass():
         self.surface_width : int = self.getDataEnviorimentValue("SURFACE_WITDH",1000)
         self.surface_height : int = self.getDataEnviorimentValue("SURFACE_HEIGHT",600)
 
-
+        self.level_now : int = 1 #default
+        self.map = Map(self.getDataonJSON(dir_filename=f"{self.getDataEnviorimentValue(name_value="DIR_MAPS")}\level_{self.level_now}.json"))
 
 
     @staticmethod
