@@ -1,4 +1,5 @@
 from map import Map
+from entity import Entity
 from buttons import Button
 from notif import Notif
 from config.envioriment_to_class import (
@@ -25,7 +26,15 @@ class ResourcesToClass():
         self.surface_height : int = self.getDataEnviorimentValue("SURFACE_HEIGHT",600)
 
         self.level_now : int = 1 #default
-        self.map = Map(self.getDataonJSON(dir_filename=f"{self.getDataEnviorimentValue(name_value="DIR_MAPS")}\level_{self.level_now}.json"))
+        self.map = Map(self.getDataonJSON(dir_filename=f"{self.getDataEnviorimentValue(name_value="DIR_MAPS")}/level_{self.level_now}.json"))
+
+        self.pacman = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PACMAN"),100,35,(25,25))
+
+        self.enemies_blue = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_BLUE"),200,35, (25,25))
+        self.enemies_pink = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_PINK"),400,35, (25,25))
+        self.enemies_red = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_RED"),300,35, (25,25))
+        self.enemies_yellow = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_YELLOW"),500,35, (25,25))
+
 
         self.button_pause = Button(BTN_PAUSE_X, BTN_PAUSE_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_PAUSE"))
         self.button_retry = Button(BTN_RETRY_X, BTN_RETRY_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_RETRY"))

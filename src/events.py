@@ -13,7 +13,18 @@ class Events(ResourcesToClass):
         
     def keyboard (self,event : pygame) -> None:
         if event.type == pygame.KEYDOWN:
-            pass
+            keys = pygame.key.get_pressed()
+            if event.key == pygame.K_LEFT: #30 -x
+                self.pacman.x -=30
+            
+            if event.key == pygame.K_RIGHT: #30 +x
+                self.pacman.x +=30
+                
+            if event.key == pygame.K_DOWN: # 30 -y
+                self.pacman.y +=30
+            
+            if event.key == pygame.K_UP: # 30 +y
+                self.pacman.y -=30
 
     def mouse (self,event : pygame) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN:

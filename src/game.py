@@ -39,6 +39,12 @@ class Game(Events):
         #map
         self.map.render(surface=self.surface)
         #entitys
+        self.pacman.render(surface=self.surface)
+
+        self.enemies_blue.render(surface=self.surface)
+        self.enemies_pink.render(surface=self.surface)
+        self.enemies_red.render(surface=self.surface)
+        self.enemies_yellow.render(surface=self.surface)
 
         #buttons
         self.button_retry.render(surface=self.surface)
