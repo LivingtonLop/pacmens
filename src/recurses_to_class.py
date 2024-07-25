@@ -1,9 +1,13 @@
 from map import Map
+from buttons import Button
+from notif import Notif
 from config.envioriment_to_class import (
                                             json,
                                             os,
                                             Union,
-                                            load_dotenv
+                                            load_dotenv,
+                                            BTN_PAUSE_X,BTN_PAUSE_y,
+                                            BTN_RETRY_X,BTN_RETRY_y
                                         )
 
 load_dotenv()
@@ -23,6 +27,10 @@ class ResourcesToClass():
         self.level_now : int = 1 #default
         self.map = Map(self.getDataonJSON(dir_filename=f"{self.getDataEnviorimentValue(name_value="DIR_MAPS")}\level_{self.level_now}.json"))
 
+        self.button_pause = Button(BTN_PAUSE_X, BTN_PAUSE_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_PAUSE"))
+        self.button_retry = Button(BTN_RETRY_X, BTN_RETRY_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_RETRY"))
+        
+        self.notif = Notif()
 
     @staticmethod
     def getDataonJSON(dir_filename: str) -> dict | None:

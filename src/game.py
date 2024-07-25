@@ -26,11 +26,22 @@ class Game(Events):
             if event.type == pygame.QUIT:
                 self.to_execute = False
 
+            self.keyboard(event=event)
+            self.mouse(event=event)
+
+
     def update(self):
         if not self.to_pause:
             pass
 
     def render(self):
         self.surface.fill((WHITE))
+        #map
         self.map.render(surface=self.surface)
+        #entitys
+
+        #buttons
+        self.button_retry.render(surface=self.surface)
+        self.button_pause.render(surface=self.surface)
+
         pygame.display.update()
