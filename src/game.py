@@ -1,3 +1,4 @@
+import math
 from config.envioriment_to_class import pygame, WHITE
 from events import Events
 class Game(Events):
@@ -17,7 +18,7 @@ class Game(Events):
             self.event()
             self.update()
             self.render()
-            self.clock.tick(60)
+            self.clock.tick(15)
 
         pygame.quit()
 
@@ -25,14 +26,30 @@ class Game(Events):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.to_execute = False
-
-            self.keyboard(event=event)
             self.mouse(event=event)
+            self.keyboard(event=event)
+
+        self.pressed() #tiene que siempre usar el get_pressed()
 
 
     def update(self):
         if not self.to_pause:
-            pass
+            #logica de seguimiento
+            self.enemies_blue.set_target(self.pacman.x, self.pacman.y)
+            self.enemies_blue.follow_target()
+
+            self.enemies_pink.set_target(self.pacman.x, self.pacman.y)
+            self.enemies_pink.follow_target()
+            
+            self.enemies_red.smarth = 1
+            self.enemies_red.set_target(self.pacman.x, self.pacman.y)
+            self.enemies_red.follow_target()
+            
+            self.enemies_yellow.smarth = 2
+            self.enemies_yellow.set_target(self.pacman.x, self.pacman.y)
+            self.enemies_yellow.follow_target()
+
+            
 
     def render(self):
         self.surface.fill((WHITE))

@@ -8,7 +8,7 @@ from typing import Union
 from dotenv import load_dotenv
 
 #CONSTANS
-KEY_DOWNS : tuple = (pygame.K_DOWN,pygame.K_RIGHT,pygame.K_UP,pygame.K_LEFT) 
+KEY_DOWNS : dict = {pygame.K_DOWN : 90 ,pygame.K_RIGHT : 0,pygame.K_UP : 270,pygame.K_LEFT : 180} 
 
 
 #COLORS

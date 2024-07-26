@@ -28,7 +28,7 @@ class ResourcesToClass():
         self.level_now : int = 1 #default
         self.map = Map(self.getDataonJSON(dir_filename=f"{self.getDataEnviorimentValue(name_value="DIR_MAPS")}/level_{self.level_now}.json"))
 
-        self.pacman = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PACMAN"),100,35,(25,25))
+        self.pacman = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PACMAN"),100,35,(25,25),self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PACMAN2"))
 
         self.enemies_blue = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_BLUE"),200,35, (25,25))
         self.enemies_pink = Entity(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_PINK"),400,35, (25,25))
