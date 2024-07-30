@@ -7,6 +7,10 @@ class Button:
         self.img = pygame.image.load(dir_image_button)
         self.scale : tuple = scale
 
-    def render (self, surface : pygame):
+    def render (self, surface : pygame) -> None:
         self.img = pygame.transform.scale(self.img,self.scale)
         surface.blit(self.img,(self.x, self.y))
+
+    def setImg(self, dir_image_button : str) -> None:
+        self.img = pygame.image.load(dir_image_button)
+        

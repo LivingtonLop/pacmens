@@ -2,19 +2,17 @@ import pygame
 import math
 class Entity:
     def __init__(self, dir_image_sprite : str, pos_x : int ,pos_y : int, scale : tuple = None,dir_image_sprite_2 : str = None) -> None:
-        self.img : str = dir_image_sprite #dinamica
-        self.img_2 : str = dir_image_sprite_2
         self.x : int= pos_x
         self.y : int= pos_y
         self.scale : tuple = scale
         self.heading : int = 0
         self.animation : bool =  False
         self.target : tuple = None
-        self.smarth : int = 5 #max
+        self.img : pygame = pygame.transform.scale(pygame.image.load(dir_image_sprite),self.scale) #dinamica
+        self.img_2 : pygame = None if dir_image_sprite_2 == None else pygame.transform.scale(pygame.image.load(dir_image_sprite_2),self.scale)
 
     def render(self, surface : pygame)-> None:
-        img = pygame.image.load(self.img_2 if self.animation else self.img)
-        sprite = pygame.transform.scale(img, self.scale)
+        sprite = self.img_2 if self.animation else self.img
         tup =(self.x, self.y) 
         if self.heading != 0:
             sprite = pygame.transform.rotate(sprite, self.heading)

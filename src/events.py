@@ -43,9 +43,8 @@ class Events(ResourcesToClass):
                 if self.button_retry.x <= mouse_x <= self.button_retry.x + self.button_retry.img.get_width() and self.button_retry.y <= mouse_y <= self.button_retry.y + self.button_retry.img.get_height():
                         
                     if self.notif.render(True,"Reinicio","Usted quiere reiniciar la partida?"):
-                        # self.retryGame()
-                        print ("reinicio")
+                        self.resetExcute()
 
                 if self.button_pause.x <= mouse_x <= self.button_pause.x + self.button_pause.img.get_width() and self.button_pause.y <= mouse_y <= self.button_pause.y + self.button_pause.img.get_height():    
                     self.notif.render(False,"Pausado","El juego esta pausado, toca nuevamente para seguir con la partida")
-                    print("pause")
+                    self.setPause()
