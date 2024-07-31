@@ -14,28 +14,23 @@ class Events(ResourcesToClass):
     def pressed(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT]: #5 -x
-            self.pacman.x -=5
-            self.pacman.toggle_animation()
-            
-        if keys[pygame.K_RIGHT]: #5 +x
-            self.pacman.x +=5
-            self.pacman.toggle_animation()
-                
-        if keys[pygame.K_DOWN]: # 5 -y
-            self.pacman.y +=5
-            self.pacman.toggle_animation()
-            
-        if keys[pygame.K_UP] :# 5 +y
-            self.pacman.y -=5
-            self.pacman.toggle_animation()
-
+        if keys[pygame.K_LEFT]:
+            self.pacman.move(-self.pacman.speed,0,self.map)    
+            self.pacman.set_animation()
+        if keys[pygame.K_RIGHT]:
+            self.pacman.move(+self.pacman.speed,0,self.map)
+            self.pacman.set_animation()
+        if keys[pygame.K_UP]:
+            self.pacman.move(0,-self.pacman.speed,self.map)
+            self.pacman.set_animation()
+        if keys[pygame.K_DOWN]:
+            self.pacman.move(0,+self.pacman.speed,self.map)
+            self.pacman.set_animation()
     
     def keyboard (self,event : pygame) -> None:
         if event.type == pygame.KEYDOWN:
             self.pacman.heading = KEY_DOWNS[event.key] if event.key in KEY_DOWNS else KEY_DOWNS[pygame.K_RIGHT]
             
-
     def mouse (self,event : pygame) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
