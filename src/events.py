@@ -30,6 +30,8 @@ class Events(ResourcesToClass):
     def keyboard (self,event : pygame) -> None:
         if event.type == pygame.KEYDOWN:
             self.pacman.heading = KEY_DOWNS[event.key] if event.key in KEY_DOWNS else KEY_DOWNS[pygame.K_RIGHT]
+        if event.type ==pygame.KEYUP:
+            self.pacman.animation = False
             
     def mouse (self,event : pygame) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN:

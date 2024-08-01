@@ -2,7 +2,7 @@ import pygame
 import math
 from map import Map
 class Entity (pygame.sprite.Sprite):
-    def __init__(self,list_dir_sprite : list [:str], pos_x, pos_y, scale:tuple) -> None:
+    def __init__(self,list_dir_sprite : list [:str], pos_x, pos_y, scale:tuple, enemies : bool = False) -> None:
         super().__init__() 
         self.images : list [:pygame] = [self.load_image_sprite(filename,scale) for filename in list_dir_sprite] #list
         self.index :int = 0
@@ -11,23 +11,34 @@ class Entity (pygame.sprite.Sprite):
         self.speed : int = 5
         self.animation : bool = False
         self.heading : int = 0
+        self.enemies : bool = enemies
 
     def move(self, x:int,y:int, map : Map):
         new = self.rect.move(x,y)
         if not map.collision(new):
             self.rect = new
         else:
-            pass #add logic para evitar atasco
-        self.transform()    
-
+            if self.enemies:
+                new1 = self.rect.move(+self.speed,0)
+                new2 = self.rect.move(-self.speed,0)
+                new3 = self.rect.move(0,+self.speed)
+                new4 = self.rect.move(0,-self.speed)
+                if not map.collision(new1):
+                    self.rect = new1
+                if not map.collision(new2):
+                    self.rect = new2
+                if not map.collision(new3):
+                    self.rect = new3
+                if not map.collision(new4):
+                    self.rect = new4
     def update(self):
         if self.animation:
             n = len(self.images)
             self.index = (self.index + 1) % n #residuio de index con n (index == 1 + 1)=> 2%2 => 0 else index = 0 1%2 => 1
             self.image = self.images[self.index]
-    
-        self.transform()    
+            self.transform()
 
+           
     @staticmethod
     def load_image_sprite(filename:str, scale:tuple)->pygame:
         return pygame.transform.scale(pygame.image.load(filename),scale)

@@ -39,13 +39,16 @@ class Game(Events):
             self.all_sprite_pacman.update()
 
             #enemigies
-            self.enemies_blue.set_target((self.pacman.rect.x,self.pacman.rect.x))
+            self.enemies_blue.set_target((self.pacman.rect.x,self.pacman.rect.y))
             self.enemies_blue.follow_target(self.map)
-            self.enemies_pink.set_target((self.pacman.rect.x,self.pacman.rect.x))
+
+            self.enemies_pink.set_target((self.pacman.rect.x,self.pacman.rect.y))
             self.enemies_pink.follow_target(self.map)
-            self.enemies_red.set_target((self.pacman.rect.x,self.pacman.rect.x))
+            
+            self.enemies_red.set_target((self.pacman.rect.x,self.pacman.rect.y))
             self.enemies_red.follow_target(self.map)
-            self.enemies_yellow.set_target((self.pacman.rect.x,self.pacman.rect.x))
+            
+            self.enemies_yellow.set_target((self.pacman.rect.x,self.pacman.rect.y))
             self.enemies_yellow.follow_target(self.map)
             
     def render(self):

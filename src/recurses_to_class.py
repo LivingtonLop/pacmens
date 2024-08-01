@@ -73,10 +73,10 @@ class ResourcesToClass():
             self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PACMAN"),
             self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PACMAN2")
         ],100,35,(20,20))
-        self.enemies_blue = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_BLUE")],200,35, (20,20))
-        self.enemies_pink = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_PINK")],400,35, (20,20))
-        self.enemies_red = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_RED")],300,35, (20,20))
-        self.enemies_yellow = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_YELLOW")],500,35, (20,20))
+        self.enemies_blue = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_BLUE")],200,35, (20,20),True)
+        self.enemies_pink = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_PINK")],400,35, (20,20),True)
+        self.enemies_red = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_RED")],300,35, (20,20),True)
+        self.enemies_yellow = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_YELLOW")],500,35, (20,20),True)
 
 
         self.button_pause = Button(BTN_PAUSE_X, BTN_PAUSE_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_PAUSE"))
