@@ -22,3 +22,5 @@ BTN_PAUSE_y : int= 530
 
 BTN_RETRY_X :int = 700
 BTN_RETRY_y : int= 530
+
+COOR_SCORE : tuple = (300,530)

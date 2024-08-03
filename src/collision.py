@@ -25,3 +25,13 @@ class Collision():
             if self.form[grid_y][grid_x] == 1:
                 response = True
         return response
+
+    def get_open_positions(self)->list:
+        open_positions = []
+        for y, row in enumerate(self.form):
+            for x, cell in enumerate(row):
+                if cell == 0:
+                    open_positions.append((x, y))
+        return open_positions
+    
+    

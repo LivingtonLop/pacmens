@@ -82,6 +82,8 @@ class ResourcesToClass():
         self.button_pause = Button(BTN_PAUSE_X, BTN_PAUSE_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_PAUSE"))
         self.button_retry = Button(BTN_RETRY_X, BTN_RETRY_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_RETRY"))
         
+        
+
         self.notif = Notif()
 
         
