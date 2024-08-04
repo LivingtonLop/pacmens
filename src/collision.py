@@ -34,4 +34,8 @@ class Collision():
                     open_positions.append((x, y))
         return open_positions
     
-    
+    def can_move_in_x(self,pos, range_check):
+        return range_check > 2
+
+    def can_move_in_y(self,pos, range_check):
+        return range_check > 2

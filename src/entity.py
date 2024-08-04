@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 from map import Map
 class Entity (pygame.sprite.Sprite):
     def __init__(self,list_dir_sprite : list [:str], pos_x, pos_y, scale:tuple, enemies : bool = False) -> None:
@@ -11,26 +12,29 @@ class Entity (pygame.sprite.Sprite):
         self.speed : int = 5
         self.animation : bool = False
         self.heading : int = 0
-        self.enemies : bool = enemies
+        self.moving_down = True
+        self.moving_right = True
 
     def move(self, x:int,y:int, map : Map):
         new = self.rect.move(x,y)
         if not map.collision(new):
             self.rect = new
-        else:
-            if self.enemies:
-                new1 = self.rect.move(+self.speed,0)
-                new2 = self.rect.move(-self.speed,0)
-                new3 = self.rect.move(0,+self.speed)
-                new4 = self.rect.move(0,-self.speed)
-                if not map.collision(new1):
-                    self.rect = new1
-                if not map.collision(new2):
-                    self.rect = new2
-                if not map.collision(new3):
-                    self.rect = new3
-                if not map.collision(new4):
-                    self.rect = new4
+        # else:
+        #     if self.enemies:
+        #         new = self.rect.move(x-random.randint(1,20),y)
+        #         if not map.collision(new):
+        #             self.rect = new
+        #         new = self.rect.move(x+random.randint(1,20),y)
+        #         if not map.collision(new):
+        #             self.rect = new
+        #         new = self.rect.move(x,y-random.randint(1,20))
+        #         if not map.collision(new):
+        #             self.rect = new
+        #         new = self.rect.move(x,y+random.randint(1,20))
+        #         if not map.collision(new):
+        #             self.rect = new
+                
+
     def update(self):
         if self.animation:
             n = len(self.images)
@@ -56,15 +60,66 @@ class Entity (pygame.sprite.Sprite):
         self.target = target
 
     def follow_target(self, map : Map)-> None:
-        dx = self.target[0] - self.rect.x
-        dy = self.target[1] - self.rect.y
+        tx = self.target[0]//map.tile_size  #target
+        ex = self.rect.x//map.tile_size #entity
+        ty = self.target[1]//map.tile_size  #target
+        ey = self.rect.y//map.tile_size #entity
+        open_pos = map.get_open_positions()
+        min_x = min(open_pos,key=lambda tupla : tupla[0])[0]
+        max_x = max(open_pos,key=lambda tupla : tupla[0])[0]
 
-        distance = math.sqrt(dx**2 + dy**2)
-        
-        if distance > 0:
-            dx/=distance
-            dy/=distance
-            self.move(dx * 3,dy * 3, map)
+        min_y = min(open_pos,key=lambda tupla : tupla[1])[1]
+        max_y = max(open_pos,key=lambda tupla : tupla[1])[1]
+
+        l = 0
+        #logica para ir de punto a a punto b
+        if tx == ex:
+            if ty < ey:
+                l = -3
+            else:
+                l = +3
+            self.move(0,l, map)
+        if ty == ey:
+
+            if tx < ex:
+                l = -3
+            else:
+                l = +3
+            self.move(l,0, map)
+
+        else:
+            # Almacenar la posición anterior
+            previous_pos = self.rect
+            # Determinar rango de movimiento
+            x_range = abs(max_x - min_x)
+            y_range = abs(max_y - min_y)
+        # Verificar si se puede mover en x o en y
+            if map.can_move_in_x(self.rect, x_range):
+                # Movimiento horizontal
+                if self.moving_right:
+                    self.rect[0] += self.speed
+                    if self.rect[0] >= max_x*map.tile_size or map.collision(self.rect):
+                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
+                        self.moving_right = False
+                else:
+                    self.rect[0] -= self.speed
+                    if self.rect[0] <= min_x*map.tile_size or map.collision(self.rect):
+                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
+                        self.moving_right = True
+            elif map.can_move_in_y(self.rect, y_range):
+                # Movimiento vertical
+                if self.moving_down:
+                    self.rect[1] += self.speed
+                    if self.rect[1] >= max_y*map.tile_size or map.collision(self.rect):
+                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
+                        self.moving_down = False
+                else:
+                    self.rect[1] -= self.speed
+                    if self.rect[1] <= min_y*map.tile_size or map.collision(self.rect):
+                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
+                        self.moving_down = True
+            
+            
 
     def render(self, surface : pygame):
         surface.blit(self.image, self.rect)

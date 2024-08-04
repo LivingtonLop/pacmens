@@ -45,17 +45,17 @@ class Game(Events):
             self.all_sprite_pacman.update()
 
             # #enemigies
-            # self.enemies_blue.set_target(pos_pacman)
-            # self.enemies_blue.follow_target(self.map)
+            self.enemies_blue.set_target((self.pacman.rect.x,self.pacman.rect.y))
+            self.enemies_blue.follow_target(self.map)
 
-            # self.enemies_pink.set_target(pos_pacman)
-            # self.enemies_pink.follow_target(self.map)
+            self.enemies_pink.set_target((self.pacman.rect.x,self.pacman.rect.y))
+            self.enemies_pink.follow_target(self.map)
             
-            # self.enemies_red.set_target(pos_pacman)
-            # self.enemies_red.follow_target(self.map)
+            self.enemies_red.set_target((self.pacman.rect.x,self.pacman.rect.y))
+            self.enemies_red.follow_target(self.map)
             
-            # self.enemies_yellow.set_target(pos_pacman)
-            # self.enemies_yellow.follow_target(self.map)
+            self.enemies_yellow.set_target((self.pacman.rect.x,self.pacman.rect.y))
+            self.enemies_yellow.follow_target(self.map)
         
             if pos_pacman in self.map.circles :
                 self.map.circles.remove(pos_pacman)
@@ -81,10 +81,10 @@ class Game(Events):
         #entitys
         self.all_sprite_pacman.draw(self.surface)
         
-        # self.enemies_blue.render(surface=self.surface)
-        # self.enemies_red.render(surface=self.surface)
-        # self.enemies_yellow.render(surface=self.surface)
-        # self.enemies_pink.render(surface=self.surface)
+        self.enemies_blue.render(surface=self.surface)
+        self.enemies_red.render(surface=self.surface)
+        self.enemies_yellow.render(surface=self.surface)
+        self.enemies_pink.render(surface=self.surface)
 
         #buttons
         self.button_retry.render(surface=self.surface)
