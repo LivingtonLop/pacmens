@@ -6,6 +6,7 @@ from config.envioriment_to_class import (
                                             json,
                                             os,
                                             Union,
+                                            pygame,
                                             load_dotenv,
                                             BTN_PAUSE_X,BTN_PAUSE_y,
                                             BTN_RETRY_X,BTN_RETRY_y
@@ -58,6 +59,7 @@ class ResourcesToClass():
         self.button_pause.setImg(self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_CONTINUE" if self.to_pause else "DIR_IMAGE_BUTTON_TO_PAUSE"))
 
     def resetExcute(self):
+        self.kill_player : bool = False
         self.to_execute : bool = True
         self.to_pause : bool = False
         #surface or window or screen
@@ -78,12 +80,16 @@ class ResourcesToClass():
         self.enemies_red = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_RED")],300,35, (20,20),True)
         self.enemies_yellow = Entity([self.getDataEnviorimentValue(name_value="DIR_IMAGE_SPRITE_PHANTOM_YELLOW")],500,35, (20,20),True)
 
+        self.other_entities : list = [self.enemies_blue,self.enemies_pink,self.enemies_red,self.enemies_yellow]
 
         self.button_pause = Button(BTN_PAUSE_X, BTN_PAUSE_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_PAUSE"))
         self.button_retry = Button(BTN_RETRY_X, BTN_RETRY_y, self.getDataEnviorimentValue(name_value="DIR_IMAGE_BUTTON_TO_RETRY"))
-        
-        
 
         self.notif = Notif()
 
+        self.all_sprite_pacman = pygame.sprite.Group()
+        self.all_sprite_pacman.add(self.pacman)
+
+        self.image_coin = pygame.image.load(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SKIN_TO_ITEM_COIN"))
+        self.image_apple = pygame.image.load(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SKIN_TO_ITEM_APPLE"))
         

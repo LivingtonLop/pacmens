@@ -12,36 +12,29 @@ class Entity (pygame.sprite.Sprite):
         self.speed : int = 5
         self.animation : bool = False
         self.heading : int = 0
-        self.moving_down = True
-        self.moving_right = True
+        self.enemies :bool= enemies
+        
 
     def move(self, x:int,y:int, map : Map):
         new = self.rect.move(x,y)
         if not map.collision(new):
             self.rect = new
-        # else:
-        #     if self.enemies:
-        #         new = self.rect.move(x-random.randint(1,20),y)
-        #         if not map.collision(new):
-        #             self.rect = new
-        #         new = self.rect.move(x+random.randint(1,20),y)
-        #         if not map.collision(new):
-        #             self.rect = new
-        #         new = self.rect.move(x,y-random.randint(1,20))
-        #         if not map.collision(new):
-        #             self.rect = new
-        #         new = self.rect.move(x,y+random.randint(1,20))
-        #         if not map.collision(new):
-        #             self.rect = new
-                
+        elif self.enemies:
+            new = self.rect.move(y,x)
+            if not map.collision(new):
+                self.rect = new
+            else:
+                new = self.rect.move(x,y)
+                if not map.collision(new):
+                    self.rect = new
 
+        
     def update(self):
         if self.animation:
             n = len(self.images)
             self.index = (self.index + 1) % n #residuio de index con n (index == 1 + 1)=> 2%2 => 0 else index = 0 1%2 => 1
             self.image = self.images[self.index]
             self.transform()
-
            
     @staticmethod
     def load_image_sprite(filename:str, scale:tuple)->pygame:
@@ -55,71 +48,59 @@ class Entity (pygame.sprite.Sprite):
             self.image = pygame.transform.rotate(self.image, self.heading)
             self.image = pygame.transform.flip(self.image,False, True)
 
-    #ai
     def set_target(self, target : tuple)-> None:
         self.target = target
 
-    def follow_target(self, map : Map)-> None:
+    def follow_target(self, map : Map, other_entities :list)-> bool: #collsion
+        #target
         tx = self.target[0]//map.tile_size  #target
-        ex = self.rect.x//map.tile_size #entity
         ty = self.target[1]//map.tile_size  #target
+        #entity
+        ex = self.rect.x//map.tile_size #entity
         ey = self.rect.y//map.tile_size #entity
-        open_pos = map.get_open_positions()
-        min_x = min(open_pos,key=lambda tupla : tupla[0])[0]
-        max_x = max(open_pos,key=lambda tupla : tupla[0])[0]
-
-        min_y = min(open_pos,key=lambda tupla : tupla[1])[1]
-        max_y = max(open_pos,key=lambda tupla : tupla[1])[1]
-
-        l = 0
-        #logica para ir de punto a a punto b
-        if tx == ex:
+        #Persecucion para ir de punto a a punto b
+        if tx == ex and not map.collision(self.rect):
             if ty < ey:
-                l = -3
+                l = -self.speed
             else:
-                l = +3
+                l = +self.speed
             self.move(0,l, map)
-        if ty == ey:
+        
+        elif ty == ey and not map.collision(self.rect):
 
             if tx < ex:
-                l = -3
+                l = -self.speed
             else:
-                l = +3
+                l = +self.speed
             self.move(l,0, map)
-
+        
         else:
-            # Almacenar la posición anterior
-            previous_pos = self.rect
-            # Determinar rango de movimiento
-            x_range = abs(max_x - min_x)
-            y_range = abs(max_y - min_y)
-        # Verificar si se puede mover en x o en y
-            if map.can_move_in_x(self.rect, x_range):
-                # Movimiento horizontal
-                if self.moving_right:
-                    self.rect[0] += self.speed
-                    if self.rect[0] >= max_x*map.tile_size or map.collision(self.rect):
-                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
-                        self.moving_right = False
+            if abs(tx - ex) > abs(ty - ey):  # Priorizar movimiento en X
+                if tx < ex:
+                    l = -self.speed
                 else:
-                    self.rect[0] -= self.speed
-                    if self.rect[0] <= min_x*map.tile_size or map.collision(self.rect):
-                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
-                        self.moving_right = True
-            elif map.can_move_in_y(self.rect, y_range):
-                # Movimiento vertical
-                if self.moving_down:
-                    self.rect[1] += self.speed
-                    if self.rect[1] >= max_y*map.tile_size or map.collision(self.rect):
-                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
-                        self.moving_down = False
+                    l = self.speed
+                self.move(l, 0, map)
+            else:  # Priorizar movimiento en Y
+                if ty < ey:
+                    l = -self.speed
                 else:
-                    self.rect[1] -= self.speed
-                    if self.rect[1] <= min_y*map.tile_size or map.collision(self.rect):
-                        self.rect = previous_pos  # Restaurar posición anterior en caso de colisión
-                        self.moving_down = True
-            
-            
+                    l = self.speed
+                self.move(0, l, map)
 
+    # Evitar solapamiento con otros fantasmas
+        for entity in other_entities:
+            if entity != self and self.rect.colliderect(entity.rect):
+                if self.rect.x < entity.rect.x:
+                    self.rect.x -= self.speed
+                else:
+                    self.rect.x += self.speed
+                if self.rect.y < entity.rect.y:
+                    self.rect.y -= self.speed
+                else:
+                    self.rect.y += self.speed
+
+        return (tx,ty) == (ex,ey)
+    
     def render(self, surface : pygame):
         surface.blit(self.image, self.rect)

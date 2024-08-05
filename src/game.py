@@ -11,11 +11,6 @@ class Game(Events):
         
         self.clock = pygame.time.Clock()
         
-        self.all_sprite_pacman = pygame.sprite.Group()
-        self.all_sprite_pacman.add(self.pacman)
-
-        self.image_coin = pygame.image.load(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SKIN_TO_ITEM_COIN"))
-        self.image_apple = pygame.image.load(self.getDataEnviorimentValue(name_value="DIR_IMAGE_SKIN_TO_ITEM_APPLE"))
         self.score : int = 0
 
     def run(self):
@@ -46,16 +41,16 @@ class Game(Events):
 
             # #enemigies
             self.enemies_blue.set_target((self.pacman.rect.x,self.pacman.rect.y))
-            self.enemies_blue.follow_target(self.map)
+            self.kill_player = self.enemies_blue.follow_target(self.map,self.other_entities)
 
             self.enemies_pink.set_target((self.pacman.rect.x,self.pacman.rect.y))
-            self.enemies_pink.follow_target(self.map)
+            self.kill_player = self.enemies_pink.follow_target(self.map,self.other_entities)
             
             self.enemies_red.set_target((self.pacman.rect.x,self.pacman.rect.y))
-            self.enemies_red.follow_target(self.map)
+            self.kill_player = self.enemies_red.follow_target(self.map,self.other_entities)
             
             self.enemies_yellow.set_target((self.pacman.rect.x,self.pacman.rect.y))
-            self.enemies_yellow.follow_target(self.map)
+            self.kill_player = self.enemies_yellow.follow_target(self.map,self.other_entities)
         
             if pos_pacman in self.map.circles :
                 self.map.circles.remove(pos_pacman)
@@ -69,6 +64,11 @@ class Game(Events):
                 self.map.coins.remove(pos_pacman)
                 self.score+=5 #more point
 
+            if self.kill_player:
+                if self.notif.render(True,"Game Over","You Loser, press yes to replay or no to close game"):
+                    self.to_execute = False
+                else:
+                    self.resetExcute()
 
     def render(self):
         self.surface.fill((WHITE))
@@ -83,8 +83,8 @@ class Game(Events):
         
         self.enemies_blue.render(surface=self.surface)
         self.enemies_red.render(surface=self.surface)
-        self.enemies_yellow.render(surface=self.surface)
         self.enemies_pink.render(surface=self.surface)
+        self.enemies_yellow.render(surface=self.surface)
 
         #buttons
         self.button_retry.render(surface=self.surface)
